@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,13 +56,13 @@ public class NewsActivity extends AppCompatActivity {
     private void showFilterDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_filter);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);
         ivClose.setOnClickListener(v -> dialog.dismiss());
 
         Button buCancel = dialog.findViewById(R.id.bu_cancel);
         buCancel.setOnClickListener(v -> dialog.dismiss());
-
 
         dialog.show();
     }
