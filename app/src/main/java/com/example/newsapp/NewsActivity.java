@@ -1,6 +1,14 @@
 package com.example.newsapp;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,4 +51,43 @@ public class NewsActivity extends AppCompatActivity {
         recNews.setLayoutManager(newsLayoutManager);
         recNews.setAdapter(newsAdapter);
     }
+
+    private void showFilterDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_filter);
+
+        ImageView ivClose = dialog.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(v -> dialog.dismiss());
+
+        Button buCancel = dialog.findViewById(R.id.bu_cancel);
+        buCancel.setOnClickListener(v -> dialog.dismiss());
+
+
+        dialog.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.app_bar_filter:
+                showFilterDialog();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
+
 }
