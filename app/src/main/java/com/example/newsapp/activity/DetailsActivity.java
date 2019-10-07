@@ -37,6 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     Article article;
     private DateConverter dateConverter = new DateConverter();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,8 @@ public class DetailsActivity extends AppCompatActivity {
         String publishedDateString = dateConverter.getDateFromDate(publishedDate);
         tvDetailsDate.setText(publishedDateString);
         tvDetailsDescription.setText(article.getDescription());
-        tvDetailsContent.setText(Html.fromHtml(article.getContent()));
+        if (article.getContent() != null)
+            tvDetailsContent.setText(Html.fromHtml(article.getContent()));
         tvAuthorName.setText(article.getAuthor());
     }
 }
