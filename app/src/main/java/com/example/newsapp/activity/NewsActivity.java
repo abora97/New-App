@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newsapp.ApiCall.APIInterface;
 import com.example.newsapp.ApiCall.ApiClient;
-import com.example.newsapp.adapters.NewsAdapter;
 import com.example.newsapp.R;
-import com.example.newsapp.utils.Constants;
+import com.example.newsapp.adapters.NewsAdapter;
 import com.example.newsapp.model.headLines.Article;
 import com.example.newsapp.model.headLines.ResponseHeadLines;
+import com.example.newsapp.utils.Constants;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,8 +38,12 @@ public class NewsActivity extends AppCompatActivity {
     @BindView(R.id.rec_news)
     RecyclerView recNews;
     List<Article> articleList;
+    @BindView(R.id.progress_news)
+    ProgressBar progressNews;
     private RecyclerView.LayoutManager newsLayoutManager;
     private NewsAdapter newsAdapter;
+
+    String country = "us";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +56,9 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     void getNews() {
+        progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
-        Call<ResponseHeadLines> call = apiService.getNews(Constants.COUNTRY_US, Constants.KEY);
+        Call<ResponseHeadLines> call = apiService.getNews(country, Constants.KEY);
         call.enqueue(new Callback<ResponseHeadLines>() {
             @Override
             public void onResponse(Call<ResponseHeadLines> call, Response<ResponseHeadLines> response) {
@@ -58,6 +66,7 @@ public class NewsActivity extends AppCompatActivity {
                     articleList = response.body().getArticles();
                     if (articleList.size() > 0) {
                         initRecycle();
+                        progressNews.setVisibility(View.GONE);
                     }
                 }
             }
@@ -65,6 +74,7 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseHeadLines> call, Throwable t) {
                 Log.e("out", t.toString());
+                progressNews.setVisibility(View.GONE);
             }
         });
     }
@@ -88,8 +98,23 @@ public class NewsActivity extends AppCompatActivity {
         Button buCancel = dialog.findViewById(R.id.bu_cancel);
         buCancel.setOnClickListener(v -> dialog.dismiss());
 
+        Spinner spinnerCountry = dialog.findViewById(R.id.spinner_country);
+
+
+        Button buFilter = dialog.findViewById(R.id.bu_filter);
+
+        buFilter.setOnClickListener(v -> {
+            country = spinnerCountry.getSelectedItem().toString();
+            if (!country.equals("Select Country")) {
+                getNews();
+                dialog.dismiss();
+            }
+        });
+
+
         dialog.show();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,7 +129,6 @@ public class NewsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.app_bar_filter:
                 showFilterDialog();
-
             default:
                 return super.onOptionsItemSelected(item);
         }
