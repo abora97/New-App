@@ -43,7 +43,7 @@ public class NewsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager newsLayoutManager;
     private NewsAdapter newsAdapter;
 
-    String country = "us";
+    String country = "us", sources = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,30 @@ public class NewsActivity extends AppCompatActivity {
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNews(country, Constants.KEY);
+        call.enqueue(new Callback<ResponseHeadLines>() {
+            @Override
+            public void onResponse(Call<ResponseHeadLines> call, Response<ResponseHeadLines> response) {
+                if (response.body().getStatus().equals("ok")) {
+                    articleList = response.body().getArticles();
+                    if (articleList.size() > 0) {
+                        initRecycle();
+                        progressNews.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseHeadLines> call, Throwable t) {
+                Log.e("out", t.toString());
+                progressNews.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    void getNewsWithSource() {
+        progressNews.setVisibility(View.VISIBLE);
+        final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
+        Call<ResponseHeadLines> call = apiService.getNewsWithSource(sources, Constants.KEY);
         call.enqueue(new Callback<ResponseHeadLines>() {
             @Override
             public void onResponse(Call<ResponseHeadLines> call, Response<ResponseHeadLines> response) {
@@ -99,6 +123,7 @@ public class NewsActivity extends AppCompatActivity {
         buCancel.setOnClickListener(v -> dialog.dismiss());
 
         Spinner spinnerCountry = dialog.findViewById(R.id.spinner_country);
+        Spinner spinnerSources = dialog.findViewById(R.id.spinner_sources);
 
 
         Button buFilter = dialog.findViewById(R.id.bu_filter);
@@ -107,6 +132,11 @@ public class NewsActivity extends AppCompatActivity {
             country = spinnerCountry.getSelectedItem().toString();
             if (!country.equals("Select Country")) {
                 getNews();
+                dialog.dismiss();
+            }
+            sources = spinnerSources.getSelectedItem().toString();
+            if (!sources.equals("Select News Sources")) {
+                getNewsWithSource();
                 dialog.dismiss();
             }
         });

@@ -8,4 +8,11 @@
         <item>at</item>
         <item>au</item>
     </string-array>
+    <string-array name="array_sources">
+        <item>Select News Sources</item>
+        <item>bbc-news</item>
+        <item>the-verge</item>
+        <item>the-washington-post</item>
+        <item>the-new-york-times</item>
+    </string-array>
 </resources>
