@@ -1,7 +1,7 @@
 package com.example.newsapp.ApiCall;
 
 
-import com.example.newsapp.Constants;
+import com.example.newsapp.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

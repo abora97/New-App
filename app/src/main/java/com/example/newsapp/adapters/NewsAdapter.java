@@ -1,4 +1,5 @@
-package com.example.newsapp;
+package com.example.newsapp.adapters;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,19 +8,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Date;
+
+import com.example.newsapp.R;
+import com.example.newsapp.model.headLines.Article;
+import com.example.newsapp.utils.DateConverter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+
+
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    List<String> list;
+    List<Article> list;
+   private DateConverter dateConverter=new DateConverter();
 
-
-    public NewsAdapter(List<String> list) {
+    public NewsAdapter(List<Article> list) {
         this.list = list;
     }
 
@@ -30,8 +41,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return new ViewHolder(inflate);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        holder.tvHeadLine.setText(list.get(position).getTitle());
+
+
+
+        Date arrivalDate =dateConverter.getDateFromDepartureOrArrivalInquiryString(list.get(position).getPublishedAt());
+        String arrivalDateString = dateConverter.getDateFromDate(arrivalDate);
+        holder.tvDate.setText(arrivalDateString);
 
     }
 
@@ -47,6 +67,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView tvHeadLine;
         @BindView(R.id.tv_date)
         TextView tvDate;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -1,7 +1,7 @@
 package com.example.newsapp.ApiCall;
 
 
-import com.example.newsapp.Constants;
+import com.example.newsapp.utils.Constants;
 import com.example.newsapp.model.headLines.ResponseHeadLines;
 
 import retrofit2.Call;
@@ -12,7 +12,7 @@ public interface APIInterface {
 
     // https://newsapi.org/v2/top-headlines?country=us&apiKey=72a09f3a08aa416c8f394e4c75ef1435
 
-    @GET("top-headlines")
+    @GET(Constants.TOP_HEADLINES)
     Call<ResponseHeadLines> getNews(@Query(Constants.COUNTRY) String country, @Query(Constants.API_KEY) String apiKey);
 
 
