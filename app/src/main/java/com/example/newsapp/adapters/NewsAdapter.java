@@ -15,12 +15,14 @@ import androidx.annotation.NonNull;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+
 import java.util.Date;
+import java.util.List;
 
 import com.example.newsapp.R;
 import com.example.newsapp.activity.DetailsActivity;
 import com.example.newsapp.model.headLines.Article;
+import com.example.newsapp.utils.Constants;
 import com.example.newsapp.utils.DateConverter;
 import com.squareup.picasso.Picasso;
 
@@ -31,11 +33,11 @@ import butterknife.ButterKnife;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    private ArrayList<Article> list;
+    private List<Article> list;
     private Context context;
     private DateConverter dateConverter = new DateConverter();
 
-    public NewsAdapter(ArrayList<Article> list, Context context) {
+    public NewsAdapter(List<Article> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -64,7 +66,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.linearLayout.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("mylist", list);
+            bundle.putParcelable(Constants.DETAILS_DATA,list.get(position));
             intent.putExtras(bundle);
             context.startActivity(intent);
         });

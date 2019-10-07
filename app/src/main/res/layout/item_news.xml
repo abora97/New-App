@@ -5,6 +5,7 @@
     android:layout_margin="10dp"
     android:background="@drawable/border"
     android:orientation="horizontal"
+    android:id="@+id/lay_news"
     android:padding="8dp">
 
     <ImageView

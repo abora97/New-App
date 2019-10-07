@@ -72,7 +72,7 @@ public class NewsActivity extends AppCompatActivity {
     private void initRecycle() {
 
         newsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        newsAdapter = new NewsAdapter(articleList);
+        newsAdapter = new NewsAdapter(articleList, NewsActivity.this);
         recNews.setLayoutManager(newsLayoutManager);
         recNews.setAdapter(newsAdapter);
     }
