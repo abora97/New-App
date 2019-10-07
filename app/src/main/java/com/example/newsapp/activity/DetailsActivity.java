@@ -43,7 +43,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
+        // get data using bundle
         Bundle bundle = getIntent().getExtras();
+        // check bundle
         if (bundle != null) {
             article = bundle.getParcelable(Constants.DETAILS_DATA);
             setTitle(article.getSource().getName());
@@ -51,6 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    // initialization method to set data in details views
     private void init() {
         Picasso.get()
                 .load(article.getUrlToImage())

@@ -45,6 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //inflate layout item
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
         return new ViewHolder(inflate);
     }
@@ -53,6 +54,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        //set add data to recycle item
         holder.tvHeadLine.setText(list.get(position).getTitle());
         holder.tvDescription.setText(list.get(position).getDescription());
         Date publishedDate = dateConverter.getDateFromDepartureOrArrivalInquiryString(list.get(position).getPublishedAt());
@@ -67,6 +69,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 .into(holder.ivNews);
 
         holder.linearLayout.setOnClickListener(v -> {
+            // start detailsActivity and move data using bundle
             Intent intent = new Intent(context, DetailsActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constants.DETAILS_DATA, list.get(position));
@@ -93,7 +96,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView tvDescription;
         @BindView(R.id.tv_time)
         TextView tvTime;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

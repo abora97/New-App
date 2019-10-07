@@ -16,12 +16,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        // start countdown to start news activity
         timer.start();
+        //set animation to imageView
         ImageView imageView = findViewById(R.id.imageView);
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade);
         imageView.startAnimation(animation);
     }
 
+    //countdown to start news activity in 3 sec
     Thread timer = new Thread() {
         @Override
         public void run() {

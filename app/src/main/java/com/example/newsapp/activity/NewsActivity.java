@@ -46,7 +46,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerView.LayoutManager newsLayoutManager;
     private NewsAdapter newsAdapter;
 
-    int isNews ;
+    int isNews;
     String country = "us", sources = "";
 
     @Override
@@ -59,6 +59,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         getNews();
     }
 
+    // api call to get all news by country
     void getNews() {
         isNews = 1;
         progressNews.setVisibility(View.VISIBLE);
@@ -85,8 +86,9 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
+    //api call to get news ny specific source
     void getNewsWithSource() {
-        isNews=0;
+        isNews = 0;
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNewsWithSource(sources, Constants.KEY);
@@ -111,45 +113,40 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
+    // this method to set data in recycleView
+    // 1-setLayoutManager
+    // 2-setAdapter
     private void initRecycle() {
-
         newsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         newsAdapter = new NewsAdapter(articleList, NewsActivity.this);
         recNews.setLayoutManager(newsLayoutManager);
         recNews.setAdapter(newsAdapter);
     }
 
+
+    // this method to show filterDialog and handle all action
     private void showFilterDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_filter);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-
         ImageView ivClose = dialog.findViewById(R.id.iv_close);
         ivClose.setOnClickListener(v -> dialog.dismiss());
-
         Button buCancel = dialog.findViewById(R.id.bu_cancel);
         buCancel.setOnClickListener(v -> dialog.dismiss());
-
         Spinner spinnerCountry = dialog.findViewById(R.id.spinner_country);
         Spinner spinnerSources = dialog.findViewById(R.id.spinner_sources);
-
-
         Button buFilter = dialog.findViewById(R.id.bu_filter);
-
         buFilter.setOnClickListener(v -> {
             country = spinnerCountry.getSelectedItem().toString();
+            sources = spinnerSources.getSelectedItem().toString();
             if (!country.equals("Select Country")) {
                 getNews();
                 dialog.dismiss();
-            }
-            sources = spinnerSources.getSelectedItem().toString();
-            if (!sources.equals("Select News Sources")) {
+            } else if (!sources.equals("Select News Sources")) {
                 getNewsWithSource();
                 dialog.dismiss();
             }
         });
-
-
         dialog.show();
     }
 
@@ -163,7 +160,6 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.app_bar_filter:
                 showFilterDialog();
@@ -174,7 +170,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        if (isNews==0) {
+        if (isNews == 0) {
             getNewsWithSource();
         } else {
             getNews();

@@ -6,6 +6,9 @@ import java.util.Date;
 
 public class DateConverter {
 
+    // convert date getting in api using format 2019-10-07T16:17:00Z
+    // here i can covert this to time and date
+
     public  Date getDateFromDepartureOrArrivalInquiryString (String date){
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date date1=null;
