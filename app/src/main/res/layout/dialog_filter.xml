@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Filter News By:"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/iv_close"
@@ -44,38 +45,44 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/shap_lay_full">
+            android:background="@drawable/shape_lay_full"
+            android:padding="4dp">
 
             <Spinner
                 android:id="@+id/spinner_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:entries="@array/array_country" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/shap_lay_full">
+            android:background="@drawable/shape_lay_full"
+            android:padding="4dp">
 
             <Spinner
                 android:id="@+id/spinner_sources"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/array_sources" />
+                android:layout_gravity="center"
+                android:entries="@array/array_sources"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:background="@color/gray" />
 
         <LinearLayout
@@ -91,6 +98,7 @@
                 android:id="@+id/bu_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:background="@drawable/bu_rounded_blue"
                 android:text="Cancel" />
 
@@ -103,6 +111,7 @@
                 android:id="@+id/bu_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:background="@drawable/bu_rounded_blue"
                 android:text="Filter" />
         </LinearLayout>

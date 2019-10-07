@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".activity.SplashActivity">
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="powered by"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="ArabAps"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 </LinearLayout>
