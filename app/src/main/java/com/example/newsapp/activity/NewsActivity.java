@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.newsapp.ApiCall.APIInterface;
 import com.example.newsapp.ApiCall.ApiClient;
@@ -33,16 +34,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.rec_news)
     RecyclerView recNews;
     List<Article> articleList;
     @BindView(R.id.progress_news)
     ProgressBar progressNews;
+    @BindView(R.id.swipe_layout)
+    SwipeRefreshLayout swipeLayout;
     private RecyclerView.LayoutManager newsLayoutManager;
     private NewsAdapter newsAdapter;
 
+    int isNews ;
     String country = "us", sources = "";
 
     @Override
@@ -51,11 +55,12 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
-
+        swipeLayout.setOnRefreshListener(this);
         getNews();
     }
 
     void getNews() {
+        isNews = 1;
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNews(country, Constants.KEY);
@@ -66,6 +71,7 @@ public class NewsActivity extends AppCompatActivity {
                     articleList = response.body().getArticles();
                     if (articleList.size() > 0) {
                         initRecycle();
+                        swipeLayout.setRefreshing(false);
                         progressNews.setVisibility(View.GONE);
                     }
                 }
@@ -80,6 +86,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     void getNewsWithSource() {
+        isNews=0;
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNewsWithSource(sources, Constants.KEY);
@@ -90,6 +97,7 @@ public class NewsActivity extends AppCompatActivity {
                     articleList = response.body().getArticles();
                     if (articleList.size() > 0) {
                         initRecycle();
+                        swipeLayout.setRefreshing(false);
                         progressNews.setVisibility(View.GONE);
                     }
                 }
@@ -161,6 +169,15 @@ public class NewsActivity extends AppCompatActivity {
                 showFilterDialog();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (isNews==0) {
+            getNewsWithSource();
+        } else {
+            getNews();
         }
     }
 }

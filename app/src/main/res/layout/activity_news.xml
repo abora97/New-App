@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".activity.NewsActivity">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_news"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
     <ProgressBar
         android:id="@+id/progress_news"
