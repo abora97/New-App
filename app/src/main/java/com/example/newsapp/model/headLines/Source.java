@@ -1,11 +1,14 @@
 
 package com.example.newsapp.model.headLines;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Source implements Serializable
+public class Source implements Parcelable
 {
 
     @SerializedName("id")
@@ -15,6 +18,22 @@ public class Source implements Serializable
     @Expose
     private String name;
     private final static long serialVersionUID = 6681459087551005897L;
+
+    protected Source(Parcel in) {
+        name = in.readString();
+    }
+
+    public static final Creator<Source> CREATOR = new Creator<Source>() {
+        @Override
+        public Source createFromParcel(Parcel in) {
+            return new Source(in);
+        }
+
+        @Override
+        public Source[] newArray(int size) {
+            return new Source[size];
+        }
+    };
 
     public Object getId() {
         return id;
@@ -32,4 +51,13 @@ public class Source implements Serializable
         this.name = name;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+    }
 }

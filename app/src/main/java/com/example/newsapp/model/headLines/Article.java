@@ -1,11 +1,14 @@
 
 package com.example.newsapp.model.headLines;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Article implements Serializable
+public class Article implements Parcelable
 {
 
     @SerializedName("source")
@@ -33,6 +36,44 @@ public class Article implements Serializable
     @Expose
     private String content;
     private final static long serialVersionUID = 2195402986094785946L;
+
+    protected Article(Parcel in) {
+        source = in.readParcelable(Source.class.getClassLoader());
+        title = in.readString();
+        description = in.readString();
+        url = in.readString();
+        urlToImage = in.readString();
+        publishedAt = in.readString();
+        content = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(source, flags);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(url);
+        dest.writeString(urlToImage);
+        dest.writeString(publishedAt);
+        dest.writeString(content);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel in) {
+            return new Article(in);
+        }
+
+        @Override
+        public Article[] newArray(int size) {
+            return new Article[size];
+        }
+    };
 
     public Source getSource() {
         return source;

@@ -1,12 +1,15 @@
 
 package com.example.newsapp.model.headLines;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseHeadLines implements Serializable
+public class ResponseHeadLines implements Parcelable
 {
 
     @SerializedName("status")
@@ -19,6 +22,23 @@ public class ResponseHeadLines implements Serializable
     @Expose
     private List<Article> articles = null;
     private final static long serialVersionUID = 3437750808074654178L;
+
+    protected ResponseHeadLines(Parcel in) {
+        status = in.readString();
+        totalResults = in.readInt();
+    }
+
+    public static final Creator<ResponseHeadLines> CREATOR = new Creator<ResponseHeadLines>() {
+        @Override
+        public ResponseHeadLines createFromParcel(Parcel in) {
+            return new ResponseHeadLines(in);
+        }
+
+        @Override
+        public ResponseHeadLines[] newArray(int size) {
+            return new ResponseHeadLines[size];
+        }
+    };
 
     public String getStatus() {
         return status;
@@ -44,4 +64,14 @@ public class ResponseHeadLines implements Serializable
         this.articles = articles;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        dest.writeInt(totalResults);
+    }
 }
