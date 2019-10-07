@@ -42,16 +42,12 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             article = bundle.getParcelable(Constants.DETAILS_DATA);
             setTitle(article.getSource().getName());
             init();
         }
-
-
     }
 
     private void init() {
@@ -66,9 +62,6 @@ public class DetailsActivity extends AppCompatActivity {
         tvDetailsDate.setText(publishedDateString);
         tvDetailsDescription.setText(article.getDescription());
         tvDetailsContent.setText(Html.fromHtml(article.getContent()));
-
-
         tvAuthorName.setText(article.getAuthor());
-
     }
 }
