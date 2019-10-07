@@ -16,7 +16,7 @@ public class Article implements Parcelable
     private Source source;
     @SerializedName("author")
     @Expose
-    private Object author;
+    private String author;
     @SerializedName("title")
     @Expose
     private String title;
@@ -39,6 +39,7 @@ public class Article implements Parcelable
 
     protected Article(Parcel in) {
         source = in.readParcelable(Source.class.getClassLoader());
+        author = in.readString();
         title = in.readString();
         description = in.readString();
         url = in.readString();
@@ -50,6 +51,7 @@ public class Article implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(source, flags);
+        dest.writeString(author);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(url);
@@ -83,11 +85,11 @@ public class Article implements Parcelable
         this.source = source;
     }
 
-    public Object getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(Object author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
