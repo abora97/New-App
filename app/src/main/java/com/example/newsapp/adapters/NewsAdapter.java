@@ -54,9 +54,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.tvHeadLine.setText(list.get(position).getTitle());
-        Date arrivalDate = dateConverter.getDateFromDepartureOrArrivalInquiryString(list.get(position).getPublishedAt());
-        String arrivalDateString = dateConverter.getDateFromDate(arrivalDate);
-        holder.tvDate.setText(arrivalDateString);
+        holder.tvDescription.setText(list.get(position).getDescription());
+        Date publishedDate = dateConverter.getDateFromDepartureOrArrivalInquiryString(list.get(position).getPublishedAt());
+        String publishedDateString = dateConverter.getDateFromDate(publishedDate);
+        holder.tvDate.setText(publishedDateString);
+        String publishedTimeString =dateConverter.getTimeFromDate(publishedDate);
+        holder.tvTime.setText(publishedTimeString);
         Picasso.get()
                 .load(list.get(position).getUrlToImage())
                 .placeholder(R.drawable.icon_news)
@@ -66,7 +69,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.linearLayout.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.DETAILS_DATA,list.get(position));
+            bundle.putParcelable(Constants.DETAILS_DATA, list.get(position));
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
@@ -86,6 +89,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView tvDate;
         @BindView(R.id.lay_news)
         LinearLayout linearLayout;
+        @BindView(R.id.tv_description)
+        TextView tvDescription;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
