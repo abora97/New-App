@@ -1,10 +1,12 @@
 package com.example.newsapp.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,6 +38,8 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tvDetailsContent;
 
     Article article;
+    @BindView(R.id.tv_url)
+    TextView tvUrl;
     private DateConverter dateConverter = new DateConverter();
 
     @Override
@@ -68,5 +72,18 @@ public class DetailsActivity extends AppCompatActivity {
         if (article.getContent() != null)
             tvDetailsContent.setText(Html.fromHtml(article.getContent()));
         tvAuthorName.setText(article.getAuthor());
+
+        tvUrl.setText(article.getUrl());
+        tvUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("googlechrome://navigate?url=" + article.getUrl());
+                Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                if (i.resolveActivity(getPackageManager()) == null) {
+                    i.setData(Uri.parse(article.getUrl()));
+                }
+                startActivity(i);
+            }
+        });
     }
 }
