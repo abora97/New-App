@@ -74,16 +74,9 @@ public class DetailsActivity extends AppCompatActivity {
         tvAuthorName.setText(article.getAuthor());
 
         tvUrl.setText(article.getUrl());
-        tvUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("googlechrome://navigate?url=" + article.getUrl());
-                Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                if (i.resolveActivity(getPackageManager()) == null) {
-                    i.setData(Uri.parse(article.getUrl()));
-                }
-                startActivity(i);
-            }
+        tvUrl.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl()));
+            startActivity(intent);
         });
     }
 }
