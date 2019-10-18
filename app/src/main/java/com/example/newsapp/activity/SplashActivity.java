@@ -26,6 +26,23 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    /*
+
+    When Thread is preferred:
+
+    When you're doing a heavy work like network communication,
+    or decoding large bitmap files, a new thread is preferred.
+    If a lot of thread is needed, maybe ExecutorService is preferred further.
+
+
+    When Handler is preferred:
+
+    When you want to update UI objects (like TextView text) from other thread,
+    it is necessary that UI objects could only be updated in UI Thread.
+    Also, when you just want to run some light code later
+    (like the delay for 300ms) you can use Handler because it's lighter and faster.
+
+     */
     private void timerStart() {
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, NewsActivity.class));
