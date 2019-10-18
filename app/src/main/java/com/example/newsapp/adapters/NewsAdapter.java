@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,19 +34,21 @@ import butterknife.ButterKnife;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    private List<Article> list;
+    private List<Article> ArticleList;
     private Context context;
     private DateConverter dateConverter = new DateConverter();
 
-    public NewsAdapter(List<Article> list, Context context) {
-        this.list = list;
+
+
+    public NewsAdapter(List<Article> ArticleList, Context context) {
+        this.ArticleList = ArticleList;
         this.context = context;
+
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflate layout item
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
         return new ViewHolder(inflate);
     }
@@ -53,17 +56,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        //set add data to recycle item
-        holder.tvHeadLine.setText(list.get(position).getTitle());
-        holder.tvDescription.setText(list.get(position).getDescription());
-        Date publishedDate = dateConverter.getDateFromDepartureOrArrivalInquiryString(list.get(position).getPublishedAt());
+        Article article = ArticleList.get(position);
+        holder.tvHeadLine.setText(article.getTitle());
+        holder.tvDescription.setText(article.getDescription());
+        Date publishedDate = dateConverter.getDateFromDepartureOrArrivalInquiryString(article.getPublishedAt());
         String publishedDateString = dateConverter.getDateFromDate(publishedDate);
         holder.tvDate.setText(publishedDateString);
-        String publishedTimeString =dateConverter.getTimeFromDate(publishedDate);
+        String publishedTimeString = dateConverter.getTimeFromDate(publishedDate);
         holder.tvTime.setText(publishedTimeString);
+
         Picasso.get()
-                .load(list.get(position).getUrlToImage())
+                .load(article.getUrlToImage())
                 .placeholder(R.drawable.icon_news)
                 .error(R.drawable.icon_news)
                 .into(holder.ivNews);
@@ -72,15 +75,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             // start detailsActivity and move data using bundle
             Intent intent = new Intent(context, DetailsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.DETAILS_DATA, list.get(position));
+            bundle.putParcelable(Constants.DETAILS_DATA, article);
             intent.putExtras(bundle);
             context.startActivity(intent);
         });
+
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return ArticleList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -96,6 +100,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView tvDescription;
         @BindView(R.id.tv_time)
         TextView tvTime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

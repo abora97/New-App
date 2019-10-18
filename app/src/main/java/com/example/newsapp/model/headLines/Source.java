@@ -5,14 +5,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Source implements Parcelable
-{
+public class Source implements Parcelable {
 
     @SerializedName("id")
-    @Expose
+    @Expose // expose v to json
     private Object id;
     @SerializedName("name")
     @Expose

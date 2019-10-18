@@ -20,7 +20,7 @@ public class DateConverter {
         return date1;
     }
 
-    public static String getTimeFromDate(Date date) {
+    public  String getTimeFromDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }

@@ -65,25 +65,7 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNews(country, Constants.KEY);
-        call.enqueue(new Callback<ResponseHeadLines>() {
-            @Override
-            public void onResponse(Call<ResponseHeadLines> call, Response<ResponseHeadLines> response) {
-                if (response.body().getStatus().equals("ok")) {
-                    articleList = response.body().getArticles();
-                    if (articleList.size() > 0) {
-                        initRecycle();
-                        swipeLayout.setRefreshing(false);
-                        progressNews.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseHeadLines> call, Throwable t) {
-                Log.e("out", t.toString());
-                progressNews.setVisibility(View.GONE);
-            }
-        });
+        callEnqueue(call);
     }
 
     //api call to get news ny specific source
@@ -92,6 +74,10 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
         progressNews.setVisibility(View.VISIBLE);
         final APIInterface apiService = ApiClient.getClient().create(APIInterface.class);
         Call<ResponseHeadLines> call = apiService.getNewsWithSource(sources, Constants.KEY);
+        callEnqueue(call);
+    }
+
+    private void callEnqueue(Call<ResponseHeadLines> call) {
         call.enqueue(new Callback<ResponseHeadLines>() {
             @Override
             public void onResponse(Call<ResponseHeadLines> call, Response<ResponseHeadLines> response) {
@@ -104,7 +90,6 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseHeadLines> call, Throwable t) {
                 Log.e("out", t.toString());
@@ -117,39 +102,17 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
     // 1-setLayoutManager
     // 2-setAdapter
     private void initRecycle() {
-        newsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         newsAdapter = new NewsAdapter(articleList, NewsActivity.this);
-        recNews.setLayoutManager(newsLayoutManager);
+        recNews.setLayoutManager(getLayoutManager());
         recNews.setAdapter(newsAdapter);
     }
 
-
-    // this method to show filterDialog and handle all action
-    private void showFilterDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_filter);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-        ImageView ivClose = dialog.findViewById(R.id.iv_close);
-        ivClose.setOnClickListener(v -> dialog.dismiss());
-        Button buCancel = dialog.findViewById(R.id.bu_cancel);
-        buCancel.setOnClickListener(v -> dialog.dismiss());
-        Spinner spinnerCountry = dialog.findViewById(R.id.spinner_country);
-        Spinner spinnerSources = dialog.findViewById(R.id.spinner_sources);
-        Button buFilter = dialog.findViewById(R.id.bu_filter);
-        buFilter.setOnClickListener(v -> {
-            country = spinnerCountry.getSelectedItem().toString();
-            sources = spinnerSources.getSelectedItem().toString();
-            if (!country.equals("Select Country")) {
-                getNews();
-                dialog.dismiss();
-            } else if (!sources.equals("Select News Sources")) {
-                getNewsWithSource();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+    private RecyclerView.LayoutManager getLayoutManager() {
+        if (newsLayoutManager == null) {
+            newsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        }
+        return newsLayoutManager;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -166,6 +129,33 @@ public class NewsActivity extends AppCompatActivity implements SwipeRefreshLayou
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    // this method to show filterDialog and handle all action
+    private void showFilterDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_filter);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+        ImageView ivClose = dialog.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(v -> dialog.dismiss());
+        Button buCancel = dialog.findViewById(R.id.bu_cancel);
+        //btn
+        buCancel.setOnClickListener(v -> dialog.dismiss());
+        Spinner spinnerCountry = dialog.findViewById(R.id.spinner_country);
+        Spinner spinnerSources = dialog.findViewById(R.id.spinner_sources);
+        Button buFilter = dialog.findViewById(R.id.bu_filter);
+        buFilter.setOnClickListener(v -> {
+            country = spinnerCountry.getSelectedItem().toString();
+            sources = spinnerSources.getSelectedItem().toString();
+            if (!country.equals("Select Country")) {
+                getNews();
+                dialog.dismiss();
+            } else if (!sources.equals("Select News Sources")) {
+                getNewsWithSource();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

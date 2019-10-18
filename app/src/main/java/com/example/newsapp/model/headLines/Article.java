@@ -5,11 +5,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Article implements Parcelable
-{
+public class Article implements Parcelable {
 
     @SerializedName("source")
     @Expose
